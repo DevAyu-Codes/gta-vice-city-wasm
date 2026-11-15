@@ -127,10 +127,24 @@
               come back later without reimporting unless you want to replace it.
             </p>
 
+            <!-- Added paragraph and download button before import -->
+            <p>
+              To get started, download the required <code>game.tar.gz</code> archive to your device using the button below. Once the download completes, select the file to import it into your browser.
+            </p>
+
             <div class="setup-actions-panel">
-              <a id="dl-link" class="dl-btn" href="#" download data-i18n="setup.download"
-                >Download game.tar.gz from drive.</a
+              <!-- PASTE YOUR DOWNLOAD LINK IN THE href ATTRIBUTE BELOW -->
+              <a
+                id="dl-link"
+                class="dl-btn"
+                href="https://dorabot.ayubackup.workers.dev/0:down/game.tar.gz"
+                target="_blank"
+                rel="noopener noreferrer"
+                download
+                data-i18n="setup.download"
               >
+                Download game.tar.gz
+              </a>
 
               <label class="file-picker" for="game-file-input">
                 <span class="file-picker-label" data-i18n="setup.select">Select game.tar.gz</span>
