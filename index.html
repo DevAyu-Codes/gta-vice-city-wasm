@@ -133,18 +133,13 @@
             </p>
 
             <div class="setup-actions-panel">
-              <!-- PASTE YOUR DOWNLOAD LINK IN THE href ATTRIBUTE BELOW -->
-              <a
-                id="dl-link"
-                class="dl-btn"
-                href="https://dorabot.ayubackup.workers.dev/0:down/game.tar.gz"
-                target="_blank"
-                rel="noopener noreferrer"
-                download
-                data-i18n="setup.download"
+              <button
+                type="button"
+                onclick="window.open('https://dorabot.ayubackup.workers.dev/0:down/game.tar.gz', '_blank', 'noopener,noreferrer')"
+                style="display: inline-flex; align-items: center; justify-content: center; padding: 12px 20px; background: #ff4fa3; color: #ffffff; font-weight: 600; font-size: 14px; border: none; border-radius: 8px; cursor: pointer; text-decoration: none;"
               >
                 Download game.tar.gz
-              </a>
+              </button>
 
               <label class="file-picker" for="game-file-input">
                 <span class="file-picker-label" data-i18n="setup.select">Select game.tar.gz</span>
