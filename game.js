@@ -34,6 +34,7 @@ if (isTouch) {
     Element.prototype.requestPointerLock = () => {};
 }
 
+const dataSize = 130 * 1024 * 1024;
 const textDecoder = new TextDecoder();
 let haveOriginalGame = true;
 
@@ -62,18 +63,9 @@ async function resumeAudioContexts() {
 }
 // The game data is English-only; the UI language (src/i18n) does not change it.
 data_content = `${replaceBR}vc-sky-en-v6.data`;
-const data_index = `${replaceBR}vc-sky-en-v6.json`;
-wasm_content = 'engine/vc-sky-en-v6.wasm';
+wasm_content = `${replaceBR}vc-sky-en-v6.wasm`;
 
 async function loadData() {
-    // Package index, written by the importer.
-    const indexResponse = await fetch(data_index, { cache: 'no-store' });
-    if (!indexResponse.ok) {
-        throw new Error(`Failed to load data index: ${indexResponse.status} ${indexResponse.url}`);
-    }
-    window.DATA_PACKAGE = await indexResponse.json();
-    const dataSize = window.DATA_PACKAGE.remote_package_size;
-
     const response = await fetch(data_content, { cache: 'no-store' });
     if (!response.ok) {
         throw new Error(`Failed to load data package: ${response.status} ${response.url}`);
@@ -115,15 +107,31 @@ async function startGame(e) {
     document.querySelector('.disclaimer').style.display = 'none';
     document.querySelector('.developed-by').style.display = 'none';
 
-    const loadingScreen = document.querySelector('.loading-screen');
+    const intro = document.querySelector('.intro');
+    const introContainer = document.querySelector('.intro-container');
+    const loaderContainer = document.querySelector('.loader-container');
     document.querySelector('.click-to-play').style.display = 'none';
-    document.querySelector('.loader-container').style.display = "flex";
-    loadingScreen.hidden = false;
+    loaderContainer.style.display = "flex";
+    introContainer.hidden = false;
+    intro.play();
 
     await window.vcUserData?.prepareLaunch();
     const dataBuffer = await loadData();
-    loadingScreen.hidden = true;
-    loadGame(dataBuffer);
+    spinnerElement.hidden = true;
+    setStatus(t("loader.clickToContinue"));
+    introContainer.hidden = false;
+    introContainer.style.cursor = 'pointer';
+    const clickHandler = () => {
+        resumeAudioContexts();
+        intro.pause();
+        introContainer.style.display = 'none';
+        loadGame(dataBuffer);
+    };
+    if (isMobile) {
+        window.addEventListener('pointerup', clickHandler, { once: true });
+    } else {
+        window.addEventListener('click', clickHandler, { once: true });
+    }
 }
 
 function setStatus(text) {
